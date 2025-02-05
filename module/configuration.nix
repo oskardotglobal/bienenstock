@@ -17,7 +17,6 @@
   };
 
   networking.hostName = name;
-
   nixpkgs.config.allowUnfree = true;
 
   nix = {

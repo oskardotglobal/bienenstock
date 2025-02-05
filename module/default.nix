@@ -1,16 +1,16 @@
-localSelf:
+flake:
 
 {
   config,
-  inputs,
+  sources,
   ...
 }:
 let
-  inherit (localSelf.inputs) sops-nix;
-  inherit (inputs) nixpkgs;
+  inherit (flake.inputs) sops-nix;
+  inherit (sources) nixpkgs;
   inherit (nixpkgs) lib;
 
-  cfg = config.flake.bienenstock;
+  cfg = config.bienenstock;
 
   apply =
     let
@@ -36,7 +36,7 @@ let
           inherit (cfg) rootAuthorizedKeys;
           pkgs = nixpkgs.legacyPackages."${system}";
 
-          bienenstockLib = config.flake.bienenstockLib { inherit pkgs; };
+          bienenstockLib = config.bienenstockLib { inherit pkgs; };
           bienenstockPkgs = nixpkgs.lib.mkIf cfg.enablePackages bienenstockLib.packages;
         }) hosts;
 
@@ -49,14 +49,14 @@ in
 with lib;
 {
   imports = [
-    (import ./lib.nix localSelf)
+    (import ./lib.nix flake)
   ];
 
-  options.flake = {
+  options = {
     colmena = mkOption {
       default = cfg.hosts;
       type = types.attrsOf types.anything;
-      description = "The underlying colmena configuration. Defined so that flake-parts can merge definitions.";
+      description = "The underlying colmena configuration. Defined so that the module system can merge definitions.";
     };
 
     bienenstock = mkOption {

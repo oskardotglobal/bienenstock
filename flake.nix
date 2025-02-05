@@ -13,28 +13,16 @@
       url = "github:szlend/nix-pkgset";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
   };
 
   outputs =
-    inputs@{ self, flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } (
-      let
-        flakeModules.default = import ./flakeModules self;
-      in
-      {
-        flake = {
-          inherit flakeModules;
+    { self, ... }:
+    {
+      module = import ./module self;
 
-          templates.default = {
-            path = ./template;
-            description = "Basic bienenstock project";
-          };
-        };
-      }
-    );
+      templates.default = {
+        path = ./template;
+        description = "Basic bienenstock project";
+      };
+    };
 }
