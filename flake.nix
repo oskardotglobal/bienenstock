@@ -20,6 +20,13 @@
     {
       module = import ./module self;
 
+      mkEntrypoint =
+        sources: main:
+        (sources.nixpkgs.lib.evalModules {
+          modules = [ main ];
+          specialArgs = { inherit sources; };
+        }).config;
+
       templates.default = {
         path = ./template;
         description = "Basic bienenstock project";
