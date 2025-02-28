@@ -121,7 +121,7 @@ with lib;
           Host ${name}
             HostName ${targetHost}
             User ${targetUser}
-            Port ${targetPort}
+            Port ${builtins.toString targetPort}
         ''
       ) "";
 
