@@ -115,13 +115,16 @@ with lib;
           targetUser ? "root",
           targetPort ? "22",
         }:
+        let
+          hostName = if targetHost != "" && targetHost != name then "HostName ${targetHost}" else "";
+        in
         ''
           ${acc}
 
           Host ${name}
-            HostName ${targetHost}
             User ${targetUser}
             Port ${builtins.toString targetPort}
+            ${hostName}
         ''
       ) "";
 
