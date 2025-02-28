@@ -100,16 +100,28 @@ with lib;
   config = {
     bienenstock.sshConfig =
       lib.attrsToList cfg.hosts
+      |> builtins.map (
+        { name, value }:
+        {
+          inherit name;
+          inherit (value) targetHost targetPort targetUser;
+        }
+      )
       |> builtins.foldl' (
         acc:
-        { name, value }:
+        {
+          name,
+          targetHost ? name,
+          targetUser ? "root",
+          targetPort ? "22",
+        }:
         ''
           ${acc}
 
           Host ${name}
-            HostName ${value.targetHost ? name}
-            User ${value.targetUser ? "root"}
-            Port ${value.targetPort ? "22"}
+            HostName ${targetHost}
+            User ${targetUser}
+            Port ${targetPort}
         ''
       ) "";
 
