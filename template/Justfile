@@ -1,0 +1,6 @@
+sources action:
+  cd sources && nix flake {{action}}
+
+deploy host args="":
+  colmena apply switch {{args}} {{host}}
+

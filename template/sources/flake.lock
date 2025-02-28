@@ -1,0 +1,107 @@
+{
+  "nodes": {
+    "bienenstock": {
+      "inputs": {
+        "nix-pkgset": "nix-pkgset",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "sops-nix": "sops-nix"
+      },
+      "locked": {
+        "lastModified": 1740755445,
+        "narHash": "sha256-9e4TgOKMBFE0VHayKF9WS33+bj4mgR2LmX3KBqLMRo4=",
+        "ref": "refs/heads/main",
+        "rev": "b0ba937c37f0c68f747410f4a11e8cc752c6f238",
+        "revCount": 10,
+        "type": "git",
+        "url": "file:///home/oskar/Workspaces/Nix/bienenstock"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/oskar/Workspaces/Nix/bienenstock"
+      }
+    },
+    "flake-compat": {
+      "locked": {
+        "lastModified": 1733328505,
+        "narHash": "sha256-NeCCThCEP3eCl2l/+27kNNK7QrwZB1IJCrXfrbv5oqU=",
+        "rev": "ff81ac966bb2cae68946d5ed5fc4994f96d0ffec",
+        "revCount": 69,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/edolstra/flake-compat/1.1.0/01948eb7-9cba-704f-bbf3-3fa956735b52/source.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz"
+      }
+    },
+    "nix-pkgset": {
+      "inputs": {
+        "nixpkgs": [
+          "bienenstock",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1709414705,
+        "narHash": "sha256-6FEbwaorflq5yfpOtmbTAwDjXhE1RM+iyhKZ18Btf1U=",
+        "owner": "szlend",
+        "repo": "nix-pkgset",
+        "rev": "1f8643bfe183afe77929d4a0e07aca946ae149e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "szlend",
+        "repo": "nix-pkgset",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1740603184,
+        "narHash": "sha256-t+VaahjQAWyA+Ctn2idyo1yxRIYpaDxMgHkgCNiMJa4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f44bd8ca21e026135061a0a57dcf3d0775b67a49",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "bienenstock": "bienenstock",
+        "flake-compat": "flake-compat",
+        "nixpkgs": "nixpkgs"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "bienenstock",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1738291974,
+        "narHash": "sha256-wkwYJc8cKmmQWUloyS9KwttBnja2ONRuJQDEsmef320=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "4c1251904d8a08c86ac6bc0d72cc09975e89aef7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
