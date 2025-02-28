@@ -31,7 +31,9 @@ with sources.nixpkgs.lib;
       let
         toPackages =
           self':
-          mapAttrsRecursive (name: mapIf (_: builtins.head name == "packages") (f: self'.callPackage f { }));
+          mapAttrsRecursive (
+            name: mapIf (_: (builtins.head name) == "packages") (f: self'.callPackage f { })
+          );
       in
       self:
       { pkgs }:
