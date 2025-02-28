@@ -131,35 +131,33 @@ with lib;
     colmena =
       let
         update = attrs: newAttrs: attrs // newAttrs;
-        perSystem = f: builtins.mapAttrs (_: { system, ... }: f system);
       in
-
-      cfg.hosts
-      |> builtins.mapAttrs (
-        _: host: {
-          imports = host.modules ++ [ sops-nix.nixosModules.sops ];
-          deployment = {
-            inherit (host)
-              buildOnTarget
-              targetHost
-              targetPort
-              targetUser
-              ;
-          };
-        }
-      )
+      builtins.mapAttrs (_: host: {
+        imports = host.modules ++ [ sops-nix.nixosModules.sops ];
+        deployment = {
+          inherit (host)
+            buildOnTarget
+            targetHost
+            targetPort
+            targetUser
+            ;
+        };
+      }) cfg.hosts
       |> update {
         meta = {
-          nixpkgs = nixpkgs.legacyPackages."${builtins.currentSystem}";
+          inherit nixpkgs;
 
-          nodeNixpkgs = perSystem (system: nixpkgs.legacyPackages."${system}") cfg.hosts;
-          nodeSpecialArgs = perSystem (system: rec {
-            inherit (cfg) rootAuthorizedKeys;
-            pkgs = nixpkgs.legacyPackages."${system}";
+          nodeSpecialArgs = builtins.mapAttrs (
+            _:
+            { system, ... }:
+            rec {
+              inherit (cfg) rootAuthorizedKeys;
+              pkgs = nixpkgs.legacyPackages."${system}";
 
-            bienenstockLib = config.bienenstockLib { inherit pkgs; };
-            bienenstockPkgs = nixpkgs.lib.mkIf cfg.enablePackages bienenstockLib.packages;
-          }) cfg.hosts;
+              bienenstockLib = config.bienenstockLib { inherit pkgs; };
+              bienenstockPkgs = nixpkgs.lib.mkIf cfg.enablePackages bienenstockLib.packages;
+            }
+          ) cfg.hosts;
 
           allowApplyAll = lib.mkDefault false;
         };
