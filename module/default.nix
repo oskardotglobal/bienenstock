@@ -98,14 +98,14 @@ with lib;
       meta = {
         nixpkgs = nixpkgs.legacyPackages."${builtins.currentSystem}";
 
-        nodeNixpkgs = perSystem (system: nixpkgs.legacyPackages."${system}") hosts;
+        nodeNixpkgs = perSystem (system: nixpkgs.legacyPackages."${system}") cfg.hosts;
         nodeSpecialArgs = perSystem (system: rec {
           inherit (cfg) rootAuthorizedKeys;
           pkgs = nixpkgs.legacyPackages."${system}";
 
           bienenstockLib = config.bienenstockLib { inherit pkgs; };
           bienenstockPkgs = nixpkgs.lib.mkIf cfg.enablePackages bienenstockLib.packages;
-        }) hosts;
+        }) cfg.hosts;
 
         allowApplyAll = lib.mkDefault false;
       };
