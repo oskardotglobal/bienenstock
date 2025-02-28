@@ -129,41 +129,71 @@ with lib;
       ) "";
 
     colmena =
-      let
-        update = attrs: newAttrs: attrs // newAttrs;
-      in
-      builtins.mapAttrs (_: host: {
-        imports = host.modules ++ [ sops-nix.nixosModules.sops ];
-        deployment = {
-          inherit (host)
-            buildOnTarget
-            targetHost
-            targetPort
-            targetUser
-            ;
-        };
-      }) cfg.hosts
-      |> update {
+      {
         meta = {
           inherit nixpkgs;
-
-          nodeSpecialArgs = builtins.mapAttrs (
-            _:
-            { system, ... }:
-            rec {
-              inherit (cfg) rootAuthorizedKeys;
-              pkgs = nixpkgs.legacyPackages."${system}";
-
-              bienenstockLib = config.bienenstockLib { inherit pkgs; };
-              bienenstockPkgs = nixpkgs.lib.mkIf cfg.enablePackages bienenstockLib.packages;
-            }
-          ) cfg.hosts;
-
           allowApplyAll = lib.mkDefault false;
         };
 
-        defaults = import ./configuration.nix;
-      };
+        defaults = _: {
+          nix = {
+            settings.experimental-features = [
+              "nix-command"
+              "flakes"
+              "pipe-operators"
+            ];
+
+            registry.nixpkgs.flake = nixpkgs;
+            channel.enable = false;
+            nixPath = [ "nixpkgs=${nixpkgs}" ];
+          };
+
+          users.users.root.openssh.authorizedKeys.keys = cfg.rootAuthorizedKeys;
+          services.openssh = {
+            enable = true;
+            settings = {
+              PasswordAuthentication = false;
+              PubkeyAuthentication = true;
+            };
+          };
+
+          imports = [ sops-nix.nixosModules.sops ];
+        };
+      }
+      // builtins.mapAttrs (
+        name: host: _:
+        let
+          pkgs = import nixpkgs { inherit (host) system; };
+          libInstance = config.bienenstockLib { inherit pkgs; };
+        in
+        {
+          _module.args = {
+            inherit pkgs;
+            bienenstockLib = libInstance;
+            bienenstockPkgs = pkgs.lib.mkIf cfg.enablePackages libInstance.packages;
+          };
+
+          networking.hostName = name;
+
+          deployment = {
+            inherit (host)
+              buildOnTarget
+              targetHost
+              targetPort
+              targetUser
+              ;
+
+            replaceUnknownProfiles = false;
+          };
+
+          nixpkgs = {
+            hostPlatform = host.system;
+            config.allowUnfree = true;
+          };
+
+          imports = host.modules;
+        }
+      ) cfg.hosts;
   };
 
 }
