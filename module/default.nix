@@ -41,10 +41,22 @@ with lib;
                     description = "The host's system and architecture";
                   };
 
+                  targetUser = mkOption {
+                    type = types.str;
+                    description = "The user to log in as. Defaults to root.";
+                    default = "root";
+                  };
+
                   targetHost = mkOption {
                     type = types.str;
                     description = "The host's IP or FQDN. Defaults to the host's name.";
                     default = "";
+                  };
+
+                  targetPort = mkOption {
+                    type = types.int;
+                    description = "The port the SSH daemon is running on. Defaults to 22.";
+                    default = 22;
                   };
 
                   modules = mkOption {
@@ -90,7 +102,12 @@ with lib;
       _: host: {
         imports = host.modules ++ [ sops-nix.nixosModules.sops ];
         deployment = {
-          inherit (host) buildOnTarget targetHost;
+          inherit (host)
+            buildOnTarget
+            targetHost
+            targetPort
+            targetUser
+            ;
         };
       }
     )
