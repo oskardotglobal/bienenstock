@@ -86,48 +86,71 @@ with lib;
             description = "See documentation of bienenstockLib.";
             default = false;
           };
+
+          sshConfig = mkOption {
+            type = types.str;
+            description = "The resulting SSH config";
+            default = "";
+          };
         };
       };
     };
   };
 
-  config.colmena =
-    let
-      update = attrs: newAttrs: attrs // newAttrs;
-      perSystem = f: builtins.mapAttrs (_: { system, ... }: f system);
-    in
+  config = {
+    bienenstock.sshConfig =
+      lib.attrsToList cfg.hosts
+      |> builtins.foldl' (
+        acc:
+        { name, value }:
+        ''
+          ${acc}
 
-    cfg.hosts
-    |> builtins.mapAttrs (
-      _: host: {
-        imports = host.modules ++ [ sops-nix.nixosModules.sops ];
-        deployment = {
-          inherit (host)
-            buildOnTarget
-            targetHost
-            targetPort
-            targetUser
-            ;
+          Host ${name}
+            HostName ${value.targetHost ? name}
+            User ${value.targetUser ? "root"}
+            Port ${value.targetPort ? "22"}
+        ''
+      ) "";
+
+    colmena =
+      let
+        update = attrs: newAttrs: attrs // newAttrs;
+        perSystem = f: builtins.mapAttrs (_: { system, ... }: f system);
+      in
+
+      cfg.hosts
+      |> builtins.mapAttrs (
+        _: host: {
+          imports = host.modules ++ [ sops-nix.nixosModules.sops ];
+          deployment = {
+            inherit (host)
+              buildOnTarget
+              targetHost
+              targetPort
+              targetUser
+              ;
+          };
+        }
+      )
+      |> update {
+        meta = {
+          nixpkgs = nixpkgs.legacyPackages."${builtins.currentSystem}";
+
+          nodeNixpkgs = perSystem (system: nixpkgs.legacyPackages."${system}") cfg.hosts;
+          nodeSpecialArgs = perSystem (system: rec {
+            inherit (cfg) rootAuthorizedKeys;
+            pkgs = nixpkgs.legacyPackages."${system}";
+
+            bienenstockLib = config.bienenstockLib { inherit pkgs; };
+            bienenstockPkgs = nixpkgs.lib.mkIf cfg.enablePackages bienenstockLib.packages;
+          }) cfg.hosts;
+
+          allowApplyAll = lib.mkDefault false;
         };
-      }
-    )
-    |> update {
-      meta = {
-        nixpkgs = nixpkgs.legacyPackages."${builtins.currentSystem}";
 
-        nodeNixpkgs = perSystem (system: nixpkgs.legacyPackages."${system}") cfg.hosts;
-        nodeSpecialArgs = perSystem (system: rec {
-          inherit (cfg) rootAuthorizedKeys;
-          pkgs = nixpkgs.legacyPackages."${system}";
-
-          bienenstockLib = config.bienenstockLib { inherit pkgs; };
-          bienenstockPkgs = nixpkgs.lib.mkIf cfg.enablePackages bienenstockLib.packages;
-        }) cfg.hosts;
-
-        allowApplyAll = lib.mkDefault false;
+        defaults = import ./configuration.nix;
       };
-
-      defaults = import ./configuration.nix;
-    };
+  };
 
 }
