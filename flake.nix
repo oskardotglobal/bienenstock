@@ -29,6 +29,7 @@
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
+        ./options.nix
         ./lib.nix
         ./module.nix
       ];
@@ -60,6 +61,33 @@
               export SSH_CONFIG_FILE="$tmp"
             '';
           };
+
+          packages.docs = pkgs.callPackage (
+            {
+              lib,
+              runCommand,
+              nixosOptionsDoc,
+              ...
+            }:
+            let
+              eval = lib.evalModules {
+                modules = [
+                  ./options.nix
+                ];
+
+                specialArgs = {
+                  inherit inputs;
+                };
+              };
+
+              optionsDoc = nixosOptionsDoc {
+                inherit (eval) options;
+              };
+            in
+            runCommand "options-doc.md" { } ''
+              cat ${optionsDoc.optionsCommonMark} >> $out
+            ''
+          ) { };
         };
 
       flake =
@@ -72,6 +100,7 @@
 
           flakeModules.default = {
             imports = [
+              ./options.nix
               ./lib.nix
               ./module.nix
             ];
