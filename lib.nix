@@ -7,7 +7,7 @@ let
 in
 with lib;
 {
-  options.bienenstockLib = mkOption {
+  options.flake.bienenstockLib = mkOption {
     type = types.attrsOf types.anything;
     default = { };
     description = ''
@@ -21,7 +21,7 @@ with lib;
     '';
   };
 
-  config.bienenstockLib = rec {
+  config.flake.bienenstockLib = rec {
     mapIf =
       cond: apply: value:
       if (cond value) then (apply value) else value;

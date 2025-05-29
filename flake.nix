@@ -2,8 +2,12 @@
   description = "A flake library for deploy-rs";
 
   inputs = {
-    flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
 
     nix-pkgset = {
       url = "github:szlend/nix-pkgset";
@@ -26,6 +30,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         ./lib.nix
+        ./module.nix
       ];
 
       systems = [
@@ -57,8 +62,22 @@
           };
         };
 
-      flake.checks = builtins.mapAttrs (
-        system: deployLib: deployLib.deployChecks self.deploy
-      ) deploy-rs.lib;
+      flake =
+        let
+          checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+        in
+        {
+          inherit checks;
+          inherit (flake-parts.lib) mkFlake;
+
+          flakeModules.default = {
+            imports = [
+              ./lib.nix
+              ./module.nix
+            ];
+
+            flake = { inherit checks; };
+          };
+        };
     };
 }

@@ -42,15 +42,21 @@ with lib;
                   };
 
                   targetHost = mkOption {
-                    type = types.str;
+                    type = types.nullOr types.str;
                     description = "The host's IP or FQDN. Defaults to the host's name.";
-                    default = "";
+                    default = null;
                   };
 
                   targetPort = mkOption {
                     type = types.int;
                     description = "The port the SSH daemon is running on. Defaults to 22.";
                     default = 22;
+                  };
+
+                  targetBastion = mkOption {
+                    type = types.nullOr types.str;
+                    description = "The SSH jump host's name, if needed.";
+                    default = null;
                   };
 
                   modules = mkOption {
@@ -111,20 +117,23 @@ with lib;
         acc:
         {
           name,
-          targetHost,
+          targetHost ? name,
           targetUser ? "root",
           targetPort ? "22",
+          targetBastion ? null,
         }:
         let
-          hostName = if targetHost != "" && targetHost != name then "HostName ${targetHost}" else "";
+          hostName = optionalString (targetHost != name) "HostName ${targetHost}";
+          proxyJump = optionalString (targetBastion != null) "ProxyJump ${targetBastion}";
         in
-        ''
+        trim ''
           ${acc}
 
           Host ${name}
             User ${targetUser}
             Port ${builtins.toString targetPort}
             ${hostName}
+            ${proxyJump}
         ''
       ) "";
 
@@ -136,16 +145,23 @@ with lib;
         targetUser,
         targetPort,
         targetHost,
+        targetBastion ? null,
         ...
       }:
       {
         inherit remoteBuild;
 
         sshUser = targetUser;
-        sshOpts = [
-          "-p"
-          targetPort
-        ];
+        sshOpts =
+          [
+            "-p"
+            targetPort
+          ]
+          ++ optionals (targetBastion != null) [
+            "-j"
+            targetBastion
+          ];
+
         hostname = targetHost;
 
         profiles.system = {
@@ -153,7 +169,7 @@ with lib;
           path = deploy-rs.lib."${system}".activate.nixos self.nixosConfigurations."${name}";
         };
       }
-    );
+    ) cfg.hosts;
 
     flake.nixosConfigurations = builtins.mapAttrs (
       name:
