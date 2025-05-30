@@ -87,20 +87,25 @@
       flake =
         let
           inherit (flake-parts.lib) mkFlake importApply;
-          checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
         in
         {
           inherit mkFlake;
 
-          flakeModules.default = {
-            imports = [
-              ./options.nix
-              (importApply ./lib.nix inputs)
-              (importApply ./module.nix inputs)
-            ];
+          flakeModules.default =
+            { self, ... }:
+            {
+              imports = [
+                ./options.nix
+                (importApply ./lib.nix inputs)
+                (importApply ./module.nix inputs)
+              ];
 
-            flake = { inherit checks; };
-          };
+              perSystem =
+                { system, ... }:
+                {
+                  checks = deploy-rs.lib."${system}".deployChecks self.deploy;
+                };
+            };
         };
     };
 }
