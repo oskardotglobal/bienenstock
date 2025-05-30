@@ -2,24 +2,26 @@
 with inputs.nixpkgs.lib;
 {
   options = {
-    flake.bienenstockLib = mkOption {
-      type = types.attrsOf types.anything;
-      default = { };
-      description = ''
-        Define custom library functions (and packages) to pass to all hosts.  
-        May be instantiated by calling using an attrset containing a nixpkgs instance `pkgs`.
+    flake = {
+      bienenstockLib = mkOption {
+        type = types.attrsOf types.anything;
+        default = { };
+        description = ''
+          Define custom library functions (and packages) to pass to all hosts.  
+          May be instantiated by calling using an attrset containing a nixpkgs instance `pkgs`.
 
-        When instantiated, all functions in the `packages` attr will be wrapped in `pkgs.callPackage`.
-        This behaviour can be controlled using `bienenstock.enablePackages`.
+          When instantiated, all functions in the `packages` attr will be wrapped in `pkgs.callPackage`.
+          This behaviour can be controlled using `bienenstock.enablePackages`.
 
-        The packages will also be available as `bienenstockPkgs` as a module argument.
-      '';
-    };
+          The packages will also be available as `bienenstockPkgs` as a module argument.
+        '';
+      };
 
-    deploy = mkOption {
-      default = { };
-      type = types.attrsOf types.anything;
-      description = "The underlying deploy-rs configuration. Defined so that the module system can merge definitions.";
+      deploy = mkOption {
+        default = { };
+        type = types.attrsOf types.anything;
+        description = "The underlying deploy-rs configuration. Defined so that the module system can merge definitions.";
+      };
     };
 
     bienenstock = mkOption {

@@ -58,7 +58,6 @@
           packages.docs = pkgs.callPackage (
             {
               lib,
-              runCommand,
               nixosOptionsDoc,
               ...
             }:
@@ -77,9 +76,7 @@
                 inherit (eval) options;
               };
             in
-            runCommand "options-doc.md" { } ''
-              cat ${optionsDoc.optionsCommonMark} >> $out
-            ''
+            optionsDoc.optionsCommonMark
           ) { };
         };
 

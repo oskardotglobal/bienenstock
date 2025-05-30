@@ -78,7 +78,7 @@ submodule
 ` { } `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -99,7 +99,7 @@ boolean
 ` false `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -120,7 +120,7 @@ attribute set of (submodule)
 ` { } `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -141,7 +141,7 @@ list of absolute path
 ` [ ] `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -162,7 +162,7 @@ boolean
 ` false `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -178,7 +178,7 @@ The host’s system and architecture
 string
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -199,7 +199,7 @@ null or string
 ` null `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -220,7 +220,7 @@ null or string
 ` null `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -241,7 +241,7 @@ signed integer
 ` 22 `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -262,7 +262,7 @@ string
 ` "root" `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -283,7 +283,7 @@ list of absolute path
 ` [ ] `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -304,7 +304,7 @@ list of string
 ` [ ] `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -325,28 +325,7 @@ string
 ` "" `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
-
-
-
-## deploy
-
-
-
-The underlying deploy-rs configuration\. Defined so that the module system can merge definitions\.
-
-
-
-*Type:*
-attribute set of anything
-
-
-
-*Default:*
-` { } `
-
-*Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 
 
@@ -373,6 +352,27 @@ attribute set of anything
 ` { } `
 
 *Declared by:*
- - [/nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options\.nix](file:///nix/store/1dkbx77x0k3pv57q5kxj99948bmslkj3-source/options.nix)
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
+
+
+
+## flake\.deploy
+
+
+
+The underlying deploy-rs configuration\. Defined so that the module system can merge definitions\.
+
+
+
+*Type:*
+attribute set of anything
+
+
+
+*Default:*
+` { } `
+
+*Declared by:*
+ - [/nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options\.nix](file:///nix/store/zrrvmxvxl8n2kg4hhgz2x38abj1i0i4c-source/options.nix)
 
 

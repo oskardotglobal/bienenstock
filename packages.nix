@@ -9,9 +9,10 @@ in
     packages.bienenstockLib = _: self.bienenstockLib;
 
     __functor =
-      self: pkgs:
+      { packages, ... }:
+      pkgs:
       let
-        toPackages = self': builtins.mapAttrs (_: f: self'.callPackage f { }) self.packages;
+        toPackages = self: builtins.mapAttrs (_: f: self.callPackage f { }) packages;
       in
       nix-pkgset.lib.makePackageSet "bienenstockPkgs" pkgs.newScope toPackages;
   };
