@@ -85,13 +85,19 @@ with lib;
       { modules, system, ... }:
 
       nixpkgs.lib.nixosSystem {
-        inherit system;
-
         specialArgs = rec {
           inherit (self) bienenstockLib;
           inherit system;
 
-          pkgs = nixpkgs.legacyPackages."${system}";
+          pkgs = import nixpkgs {
+            inherit system;
+
+            config = {
+              allowUnfree = true;
+              allowUnsupportedSystem = true;
+              cudaSupport = true;
+            };
+          };
 
           bienenstockPkgs = mkIf cfg.enablePackages (bienenstockLib {
             inherit pkgs;
@@ -100,10 +106,15 @@ with lib;
 
         modules = modules ++ [
           (
+            { pkgs, modulesPath, ... }:
+            {
+              imports = [ (modulesPath + "/misc/nixpkgs/read-only.nix") ];
+              nixpkgs = { inherit pkgs; };
+            }
+          )
+          (
             { pkgs, ... }:
             {
-              nixpkgs.config.allowUnfree = true;
-
               nix = {
                 settings.experimental-features = [
                   "nix-command"
