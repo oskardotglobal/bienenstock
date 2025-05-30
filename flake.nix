@@ -10,7 +10,7 @@
     };
 
     nix-pkgset = {
-      url = "github:szlend/nix-pkgset";
+      url = "github:szlend/nix-pkgset/60e06913b0d15b4c35534a070de109cd413038c8";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -22,7 +22,6 @@
 
   outputs =
     inputs@{
-      self,
       deploy-rs,
       flake-parts,
       ...

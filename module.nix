@@ -103,9 +103,7 @@ with lib;
             };
           };
 
-          bienenstockPkgs = mkIf cfg.enablePackages (bienenstockLib {
-            inherit pkgs;
-          });
+          bienenstockPkgs = mkIf cfg.enablePackages (bienenstockLib pkgs);
         };
 
         modules = [ (import ./configuration.nix { inherit cfg name nixpkgs; }) ] ++ cfg.modules ++ modules;
