@@ -28,12 +28,6 @@
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        ./options.nix
-        ./lib.nix
-        ./module.nix
-      ];
-
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -92,17 +86,17 @@
 
       flake =
         let
+          inherit (flake-parts.lib) mkFlake importApply;
           checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
         in
         {
-          inherit checks;
-          inherit (flake-parts.lib) mkFlake;
+          inherit mkFlake;
 
           flakeModules.default = {
             imports = [
               ./options.nix
-              ./lib.nix
-              ./module.nix
+              (importApply ./lib.nix inputs)
+              (importApply ./module.nix inputs)
             ];
 
             flake = { inherit checks; };

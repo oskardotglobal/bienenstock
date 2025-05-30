@@ -1,6 +1,8 @@
+inputs':
+
 { inputs, config, ... }:
 let
-  inherit (inputs) nix-pkgset;
+  inherit (inputs') nix-pkgset;
   inherit (inputs.nixpkgs) lib;
 
   cfg = config.bienenstock;

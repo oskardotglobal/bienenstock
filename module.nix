@@ -1,3 +1,5 @@
+inputs':
+
 {
   self,
   config,
@@ -5,7 +7,9 @@
   ...
 }:
 let
-  inherit (inputs) nixpkgs deploy-rs;
+  inherit (inputs) nixpkgs;
+  inherit (inputs') deploy-rs;
+
   inherit (nixpkgs) lib;
 
   cfg = config.bienenstock;
