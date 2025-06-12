@@ -1,9 +1,4 @@
-inputs':
-
 { self, ... }:
-let
-  inherit (inputs') nix-pkgset;
-in
 {
   config.flake.bienenstockLib.packages = {
     bienenstockLib = _: (builtins.removeAttrs self.bienenstockLib [ "packages" ]);
@@ -11,8 +6,8 @@ in
     __functor =
       packages: pkgs:
       let
-        toPackages = self: builtins.mapAttrs (_: f: self.callPackage f { }) packages;
+        callPackage = pkgs.lib.callPackageWith (pkgs // packages);
       in
-      nix-pkgset.lib.makePackageSet "bienenstockPkgs" pkgs.newScope toPackages;
+      builtins.mapAttrs (_: f: callPackage f { inherit callPackage; }) packages;
   };
 }

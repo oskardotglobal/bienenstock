@@ -58,27 +58,6 @@
         "type": "github"
       }
     },
-    "nix-pkgset": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1742367519,
-        "narHash": "sha256-0EzhVYhXDFNyM2NSFaKXj424EjKUbHo9nAj7QskRnHE=",
-        "owner": "szlend",
-        "repo": "nix-pkgset",
-        "rev": "60e06913b0d15b4c35534a070de109cd413038c8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "szlend",
-        "repo": "nix-pkgset",
-        "rev": "60e06913b0d15b4c35534a070de109cd413038c8",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1748190013,
@@ -99,7 +78,6 @@
       "inputs": {
         "deploy-rs": "deploy-rs",
         "flake-parts": "flake-parts",
-        "nix-pkgset": "nix-pkgset",
         "nixpkgs": "nixpkgs"
       }
     },
