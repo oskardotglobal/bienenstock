@@ -68,7 +68,7 @@ with lib;
         sshOpts =
           [
             "-p"
-            targetPort
+            (builtins.toString targetPort)
           ]
           ++ optionals (targetBastion != null) [
             "-j"
@@ -99,11 +99,10 @@ with lib;
             config = {
               allowUnfree = true;
               allowUnsupportedSystem = true;
-              cudaSupport = true;
             };
           };
 
-          bienenstockPkgs = mkIf cfg.enablePackages (bienenstockLib pkgs);
+          bienenstockPkgs = mkIf cfg.enablePackages (bienenstockLib.packages pkgs);
         };
 
         modules = [ (import ./configuration.nix { inherit cfg name nixpkgs; }) ] ++ cfg.modules ++ modules;
