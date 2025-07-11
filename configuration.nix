@@ -4,9 +4,8 @@
   nixpkgs,
 }:
 
-{ pkgs, modulesPath, ... }:
+{ pkgs, ... }:
 {
-  imports = [ (modulesPath + "/misc/nixpkgs/read-only.nix") ];
   nixpkgs = { inherit pkgs; };
 
   nix = {
