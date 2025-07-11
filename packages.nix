@@ -8,6 +8,12 @@
       let
         callPackage = pkgs.lib.callPackageWith (pkgs // packages);
       in
-      builtins.mapAttrs (_: f: callPackage f { inherit callPackage; }) packages;
+      builtins.mapAttrs (
+        _: f:
+        callPackage f {
+          inherit callPackage;
+          inherit (pkgs) system;
+        }
+      ) packages;
   };
 }

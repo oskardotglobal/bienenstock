@@ -90,7 +90,7 @@ with lib;
 
       nixpkgs.lib.nixosSystem {
         specialArgs = rec {
-          inherit (self) bienenstockLib;
+          inherit (config) bienenstockLib;
           inherit system;
 
           pkgs = import nixpkgs {
