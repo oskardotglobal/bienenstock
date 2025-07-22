@@ -4,16 +4,11 @@
     bienenstockLib = _: (builtins.removeAttrs self.bienenstockLib [ "packages" ]);
 
     __functor =
-      packages: pkgs:
+      self: pkgs:
       let
         inherit (pkgs) lib;
+        self' = builtins.removeAttrs self [ "__functor" ];
       in
-      lib.fix (
-        self:
-        let
-          callPackage = lib.callPackageWith (pkgs // self);
-        in
-        builtins.mapAttrs (_: f: callPackage f { }) packages
-      );
+      lib.makeScope pkgs.newScope (scope: builtins.mapAttrs (_: f: scope.callPackage f { }) self');
   };
 }

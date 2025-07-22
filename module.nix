@@ -87,27 +87,26 @@ with lib;
     flake.nixosConfigurations = builtins.mapAttrs (
       name:
       { modules, system, ... }:
-
       nixpkgs.lib.nixosSystem {
-        specialArgs = rec {
-          inherit (config) bienenstockLib;
-          inherit system;
-
-          pkgs = import nixpkgs {
-            inherit system;
-
-            config = {
-              allowUnfree = true;
-              allowUnsupportedSystem = true;
-            };
-          };
-
-          bienenstockPkgs = mkIf cfg.enablePackages (bienenstockLib.packages pkgs);
-        };
-
         modules =
           [
             nixpkgs.nixosModules.readOnlyPkgs
+            {
+              _module.specialArgs = rec {
+                inherit (config) bienenstockLib;
+                inherit system;
+
+                bienenstockPkgs = mkIf cfg.enablePackages (bienenstockLib.packages pkgs);
+                pkgs = import nixpkgs {
+                  inherit system;
+
+                  config = {
+                    allowUnfree = true;
+                    allowUnsupportedSystem = true;
+                  };
+                };
+              };
+            }
             (import ./configuration.nix { inherit cfg name nixpkgs; })
           ]
           ++ cfg.modules
