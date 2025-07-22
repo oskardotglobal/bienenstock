@@ -4,9 +4,20 @@
   nixpkgs,
 }:
 
-{ pkgs, ... }:
+{ bienenstockLib, system, ... }:
+let
+  pkgs = import nixpkgs {
+    inherit system;
+
+    config = {
+      allowUnfree = true;
+      allowUnsupportedSystem = true;
+    };
+  };
+in
 {
   nixpkgs = { inherit pkgs; };
+  _module.args.bienenstockPkgs = pkgs.lib.mkIf cfg.enablePackages (bienenstockLib.packages pkgs);
 
   nix = {
     settings.experimental-features = [

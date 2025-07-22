@@ -50,69 +50,65 @@ with lib;
         ''
       ) "";
 
-    flake.deploy.nodes = builtins.mapAttrs (
-      name:
-      {
-        system,
-        remoteBuild,
-        targetUser,
-        targetPort,
-        targetHost,
-        targetBastion ? null,
-        ...
-      }:
-      {
-        inherit remoteBuild;
+    flake = {
+      deploy.nodes = builtins.mapAttrs (
+        name:
+        {
+          system,
+          remoteBuild,
+          targetUser,
+          targetPort,
+          targetHost,
+          targetBastion ? null,
+          ...
+        }:
+        {
+          inherit remoteBuild;
 
-        sshUser = targetUser;
-        sshOpts =
-          [
-            "-p"
-            (builtins.toString targetPort)
-          ]
-          ++ optionals (targetBastion != null) [
-            "-j"
-            targetBastion
-          ];
+          sshUser = targetUser;
+          sshOpts =
+            [
+              "-p"
+              (builtins.toString targetPort)
+            ]
+            ++ optionals (targetBastion != null) [
+              "-j"
+              targetBastion
+            ];
 
-        hostname = targetHost;
+          hostname = targetHost;
 
-        profiles.system = {
-          user = "root";
-          path = deploy-rs.lib."${system}".activate.nixos self.nixosConfigurations."${name}";
-        };
-      }
-    ) cfg.hosts;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib."${system}".activate.nixos self.nixosConfigurations."${name}";
+          };
+        }
+      ) cfg.hosts;
 
-    flake.nixosConfigurations = builtins.mapAttrs (
-      name:
-      { modules, system, ... }:
-      nixpkgs.lib.nixosSystem {
-        modules =
-          [
-            nixpkgs.nixosModules.readOnlyPkgs
-            {
-              _module.specialArgs = rec {
-                inherit (config) bienenstockLib;
-                inherit system;
+      nixosConfigurations = builtins.mapAttrs (
+        name:
+        { modules, system, ... }:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit (self) bienenstockLib;
+            inherit system;
+          };
 
-                bienenstockPkgs = mkIf cfg.enablePackages (bienenstockLib.packages pkgs);
-                pkgs = import nixpkgs {
-                  inherit system;
-
-                  config = {
-                    allowUnfree = true;
-                    allowUnsupportedSystem = true;
-                  };
-                };
-              };
-            }
-            (import ./configuration.nix { inherit cfg name nixpkgs; })
-          ]
-          ++ cfg.modules
-          ++ modules;
-      }
-    ) cfg.hosts;
+          modules =
+            [
+              nixpkgs.nixosModules.readOnlyPkgs
+              (import ./configuration.nix {
+                inherit
+                  cfg
+                  name
+                  nixpkgs
+                  ;
+              })
+            ]
+            ++ cfg.modules
+            ++ modules;
+        }
+      ) cfg.hosts;
+    };
   };
-
 }
