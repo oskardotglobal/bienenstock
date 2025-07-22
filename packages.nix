@@ -6,14 +6,14 @@
     __functor =
       packages: pkgs:
       let
-        callPackage = pkgs.lib.callPackageWith (pkgs // packages);
+        inherit (pkgs) lib;
       in
-      builtins.mapAttrs (
-        _: f:
-        callPackage f {
-          inherit callPackage;
-          inherit (pkgs) system;
-        }
-      ) packages;
+      lib.fix (
+        self:
+        let
+          callPackage = lib.callPackageWith (pkgs // self);
+        in
+        builtins.mapAttrs (_: f: callPackage f { }) packages
+      );
   };
 }
