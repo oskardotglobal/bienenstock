@@ -72,7 +72,7 @@ with lib;
               (builtins.toString targetPort)
             ]
             ++ optionals (targetBastion != null) [
-              "-j"
+              "-J"
               targetBastion
             ];
 
