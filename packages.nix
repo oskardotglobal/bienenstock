@@ -1,3 +1,5 @@
+{ nix-pkgset, ... }:
+
 { self, ... }:
 {
   config.flake.bienenstockLib.packages = {
@@ -6,9 +8,10 @@
     __functor =
       self: pkgs:
       let
-        inherit (pkgs) lib;
         self' = builtins.removeAttrs self [ "__functor" ];
       in
-      lib.makeScope pkgs.newScope (scope: builtins.mapAttrs (_: f: scope.callPackage f { }) self');
+      nix-pkgset.lib.makePackageSet "bienenstockPkgs" pkgs.newScope (
+        scope: builtins.mapAttrs (_: f: scope.callPackage f { }) self'
+      );
   };
 }
