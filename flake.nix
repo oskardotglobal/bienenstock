@@ -92,7 +92,7 @@
             {
               imports = [
                 ./options.nix
-                (importApply ./packages.nix inputs)
+                ./packages.nix
                 (importApply ./module.nix inputs)
               ];
 
