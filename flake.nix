@@ -41,20 +41,6 @@
         {
           formatter = pkgs.nixfmt-tree;
 
-          devShells.default = pkgs.mkShellNoCC {
-            shellHook = ''
-              tmp="$(mktemp -p /tmp)"
-
-              nix eval --impure --json .#bienenstock.sshConfig \
-                | sed -E \
-                    -e 's/^"(.*)"$/\1/' \
-                    -e 's/\\n/\n/g' \
-                > "$tmp"
-
-              export SSH_CONFIG_FILE="$tmp"
-            '';
-          };
-
           packages.docs = pkgs.callPackage (
             {
               lib,

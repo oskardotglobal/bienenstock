@@ -17,13 +17,17 @@ in
 with lib;
 {
   config = {
-    bienenstock.sshConfig =
+    bienenstock.sshConfig = ''
+      Include ~/.ssh/config
+
+    ''
+    + (
       attrsToList cfg.hosts
       |> builtins.map (
         { name, value }:
-        {
+        value
+        // {
           inherit name;
-          inherit (value) targetHost targetPort targetUser;
         }
       )
       |> builtins.foldl' (
@@ -34,6 +38,7 @@ with lib;
           targetUser ? "root",
           targetPort ? "22",
           targetBastion ? null,
+          ...
         }:
         let
           hostName = optionalString (targetHost != name) "HostName ${targetHost}";
@@ -48,7 +53,8 @@ with lib;
             ${hostName}
             ${proxyJump}
         ''
-      ) "";
+      ) ""
+    );
 
     flake = {
       deploy.nodes = builtins.mapAttrs (
@@ -66,15 +72,14 @@ with lib;
           inherit remoteBuild;
 
           sshUser = targetUser;
-          sshOpts =
-            [
-              "-p"
-              (builtins.toString targetPort)
-            ]
-            ++ optionals (targetBastion != null) [
-              "-J"
-              targetBastion
-            ];
+          sshOpts = [
+            "-p"
+            (builtins.toString targetPort)
+          ]
+          ++ optionals (targetBastion != null) [
+            "-J"
+            targetBastion
+          ];
 
           hostname = targetHost;
 
@@ -94,19 +99,18 @@ with lib;
             inherit system;
           };
 
-          modules =
-            [
-              nixpkgs.nixosModules.readOnlyPkgs
-              (import ./configuration.nix {
-                inherit
-                  cfg
-                  name
-                  nixpkgs
-                  ;
-              })
-            ]
-            ++ cfg.modules
-            ++ modules;
+          modules = [
+            nixpkgs.nixosModules.readOnlyPkgs
+            (import ./configuration.nix {
+              inherit
+                cfg
+                name
+                nixpkgs
+                ;
+            })
+          ]
+          ++ cfg.modules
+          ++ modules;
         }
       ) cfg.hosts;
     };
